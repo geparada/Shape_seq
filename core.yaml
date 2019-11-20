@@ -1,0 +1,15 @@
+channels:
+ - conda-forge
+ - bioconda
+ - defaults
+dependencies:
+ - python=2.7
+ - biopython
+ - numpy
+ - samtools
+ - bowtie2
+ - fastqc
+ - r
+ - rnastructure
+ - meme
+ - viennarna
