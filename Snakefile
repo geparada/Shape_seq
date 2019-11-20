@@ -1,5 +1,5 @@
 
-cell = ["Sh3", "Sh4", "Sh5"]
+cell = ["Sh3", "Sh5"]
 condition = ["DMSO", "NAI"]
 rep = ["rep1", "rep2"]
 rd = ["R1", "R2"]
