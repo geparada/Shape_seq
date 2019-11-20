@@ -27,11 +27,11 @@ rule triming:
 		"fastq/{cell}-{condition}-{rep}_combined_{rd}.fastq"
 	output:
 		temp("fastq/trim/{cell}-{condition}-{rep}_combined_{rd}.fastq")
-	param:
+	params:
 		apt3 =  lambda wildcards : adapter3[wildcards.rd]
 	conda:
 		"../envs/core.yaml"
 	shell:
-		"bwa index {input}"
+		"comdand  {input}  {params.apt3}"
 		
 
