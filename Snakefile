@@ -28,7 +28,7 @@ rule triming:
 	output:
 		temp("fastq/trim/{cell}-{condition}-{rep}_combined_{rd}.fastq")
 	params:
-		apt3 =  lambda wildcards : adapter3[wildcards.rd]
+		apt3 =  lambda wildcards : adapter3[wildcards.rd],
 		minqual = 10
 	conda:
 		"env/core.yaml"
