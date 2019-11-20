@@ -1,9 +1,9 @@
 
 rule unzip_fastq:
     input:
-        "../{rep}/{sample}{rep}_combined_{rd}.fastq.gz"
+        "../{rep}/{sample}{rd}.fastq.gz"
     output:
-        temp("fastq/{sample}{rep}_combined_{rd}.fastq")
+        temp("fastq/{sample}{rd}.fastq")
     shell:
         "zcat {input} > {output}"
 
