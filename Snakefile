@@ -1,9 +1,22 @@
-rule bwa_index:
+
+rule unzip_fastq:
+    input:
+        "../{rep}/{sample}{rep}_combined_{rd}.fastq.gz"
+    output:
+        temp("fastq/{sample}{rep}_combined_{rd}.fastq")
+    shell:
+        "zcat {input} > {output}"
+
+
+
+rule triming:
 	input:
-		"../{rep}/{sample}.fastq.gz"
+		"../{rep}/{sample}{rd}.fastq.gz"
 	output:
-		"Round1/ME_TAGs.fa.amb"
+		"fastq/{sample}{rd}.fastq.trim"
 	conda:
 		"../envs/core.yaml"
 	shell:
 		"bwa index {input}"
+		
+
