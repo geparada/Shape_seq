@@ -29,9 +29,10 @@ rule triming:
 		temp("fastq/trim/{cell}-{condition}-{rep}_combined_{rd}.fastq")
 	params:
 		apt3 =  lambda wildcards : adapter3[wildcards.rd]
+		minqual = 10
 	conda:
-		"../envs/core.yaml"
+		"env/core.yaml"
 	shell:
-		"comdand  {input}  {params.apt3}"
+		"python ../StructureFold2/fastq_trimmer.py  {input} -tp {params.apt3} -minqual {params.minqual}"
 		
 
