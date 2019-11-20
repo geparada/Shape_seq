@@ -6,7 +6,7 @@ rep = ["rep1", "rep2"]
 
 rule all:
 	input:
-		expand("fastq/{cell}-{condition}-{rep}_combined_{rd}.fastq", cell=cell, condition=condition, rep=rep, rd=[1,2] )
+		expand("fastq/{cell}-{condition}-{rep}_combined_{rd}.fastq", cell=cell, condition=condition, rep=rep, rd=["R1","R2"] )
 
 
 rule unzip_fastq:
