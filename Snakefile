@@ -2,11 +2,12 @@
 cell = ["Sh3", "Sh4", "Sh5"]
 condition = ["DMSO", "NAI"]
 rep = ["rep1", "rep2"]
+rd = ["R1", "R2"]
 
 
 rule all:
 	input:
-		expand("fastq/{cell}-{condition}-{rep}_combined_{rd}.fastq", cell=cell, condition=condition, rep=rep, rd=["R1","R2"] )
+		expand("fastq/{cell}-{condition}-{rep}_combined_{rd}.fastq", cell=cell, condition=condition, rep=rep, rd=rd )
 
 
 rule unzip_fastq:
