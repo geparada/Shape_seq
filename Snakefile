@@ -1,11 +1,20 @@
 
+cell = ["Sh3", "Sh4", "Sh5"]
+condition = ["DMSO", "NAI"]
+rep = ["rep1", "rep2"]
+
+
+rule all:
+	expand("fastq/{cell}-{condition}-{rep}_combined_{rd}.fastq", cell=cell, condition=condition, rep=rep, rd=[1,2] )
+
+
 rule unzip_fastq:
-    input:
-        "../{rep}/{sample}{rd}.fastq.gz"
-    output:
-        temp("fastq/{sample}{rd}.fastq")
-    shell:
-        "zcat {input} > {output}"
+	input:
+		"../{rep}/{cell}-{condition}-{rep}_combined_{rd}.fastq.gz"
+	output:
+		temp("fastq/{cell}-{condition}-{rep}_combined_{rd}.fastq")
+	shell:
+		"zcat {input} > {output}"
 
 
 
