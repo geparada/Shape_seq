@@ -4,6 +4,8 @@ condition = ["DMSO", "NAI"]
 rep = ["rep1", "rep2"]
 rd = ["R1", "R2"]
 
+adapter3 = {R1:"AGATCGGAAGAGCACACGTCTGAACTCCAGTCA", R2:"AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"}
+
 
 rule all:
 	input:
@@ -22,9 +24,11 @@ rule unzip_fastq:
 
 rule triming:
 	input:
-		"../{rep}/{sample}{rd}.fastq.gz"
+		"fastq/{cell}-{condition}-{rep}_combined_{rd}.fastq"
 	output:
-		"fastq/{sample}{rd}.fastq.trim"
+		temp("fastq/trim/{cell}-{condition}-{rep}_combined_{rd}.fastq")
+	param:
+		apt3 =  lambda wildcards : adapter3[wildcards.rd]
 	conda:
 		"../envs/core.yaml"
 	shell:
