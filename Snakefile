@@ -9,7 +9,8 @@ adapter3 = {"R1":"AGATCGGAAGAGCACACGTCTGAACTCCAGTCA", "R2":"AGATCGGAAGAGCGTCGTGT
 
 rule all:
 	input:
-		expand("fastq/trim/{cell}-{condition}-{rep}_combined_{rd}.fastq", cell=cell, condition=condition, rep=rep, rd=rd )
+		expand("fastqc/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html", cell=cell, condition=condition, rep=rep, rd=rd )
+		#expand("fastq/trim/{cell}-{condition}-{rep}_combined_{rd}.fastq", cell=cell, condition=condition, rep=rep, rd=rd )
 
 
 rule unzip_fastq:
