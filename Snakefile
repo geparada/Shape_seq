@@ -22,12 +22,24 @@ rule unzip_fastq:
 		"zcat {input} > {output}"
 
 rule fastqc:
-	input:
-		"../{rep}/{cell}-{condition}-{rep}_combined_{rd}.fastq.gz"
-	output:
-		"fastqc/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html"
-	shell:
-		"fastqc {input} -o {output} }"		
+    input:
+        "../{rep}/{cell}-{condition}-{rep}_combined_{rd}.fastq.gz"
+    output:
+        html="fastqc/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html",
+        zip="fastqc/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.zip" # the suffix _fastqc.zip is necessary for multiqc to find the file. If not using multiqc, you are free to choose an arbitrary filename
+    params: "-a adapters.tab -t 8"
+    wrapper:
+        "0.47.0/bio/fastqc"
+
+#rule fastqc:
+#	input:
+#		"../{rep}/{cell}-{condition}-{rep}_combined_{rd}.fastq.gz"
+#	output:
+#		"fastqc/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html"
+#	params:
+#		"fastqc/{cell}-{condition}-{rep}_combined_{rd}/"
+#	shell:
+#		"fastqc {input} -o {params} -a adapters.tab -t 8"		
 
 
 rule triming:
