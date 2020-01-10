@@ -4,12 +4,11 @@ condition = ["DMSO", "NAI"]
 rep = ["rep1", "rep2"]
 rd = ["R1", "R2"]
 
-adapter3 = {"R1":"AGATCGGAAGAGCACACGTCTGAACTCCAGTCA", "R2":"AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"}
-
+adapter3 = {"R1":"AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC", "R2":"AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT"}
 
 rule all:
 	input:
-		expand("fastqc/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html", cell=cell, condition=condition, rep=rep, rd=rd )
+		expand("trimmed/{cell}-{condition}-{rep}_combined_R1.fastq.gz", cell=cell, condition=condition, rep=rep, rd=rd )
 		#expand("fastq/trim/{cell}-{condition}-{rep}_combined_{rd}.fastq", cell=cell, condition=condition, rep=rep, rd=rd )
 
 
@@ -30,6 +29,21 @@ rule fastqc:
     params: "-a adapters.tab -t 8"
     wrapper:
         "0.47.0/bio/fastqc"
+
+
+rule cutadapt:
+    input: ["../{rep}/{cell}-{condition}-{rep}_combined_R1.fastq.gz", "../{rep}/{cell}-{condition}-{rep}_combined_R2.fastq.gz"]
+    output:
+        fastq1="trimmed/{cell}-{condition}-{rep}_combined_R1.fastq.gz",
+        fastq2="trimmed/{cell}-{condition}-{rep}_combined_R2.fastq.gz",
+        qc="trimmed/{cell}-{condition}-{rep}_combined.log"
+    params:
+        adapters = '-a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT',
+        others = ""
+    threads: 4 # set desired number of threads here
+    wrapper:
+        "0.47.0/bio/cutadapt/pe"
+
 
 #rule fastqc:
 #	input:
