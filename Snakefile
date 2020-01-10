@@ -20,6 +20,13 @@ rule unzip_fastq:
 	shell:
 		"zcat {input} > {output}"
 
+rule fastqc:
+	input:
+		"../{rep}/{cell}-{condition}-{rep}_combined_{rd}.fastq.gz"
+	output:
+		"fastqc/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html"
+	shell:
+		"fastqc {input} -o {output} }"		
 
 
 rule triming:
