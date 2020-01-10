@@ -45,6 +45,17 @@ rule cutadapt:
         "0.47.0/bio/cutadapt/pe"
 
 
+rule post_fastqc:
+    input:
+        "trimmed/{cell}-{condition}-{rep}_combined_R1.fastq.gz"
+    output:
+        html="fastqc/cutadapt/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html",
+        zip="fastqc/cutadapt/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.zip" # the suffix _fastqc.zip is necessary for multiqc to find the file. If not using multiqc, you are free to choose an arbitrary filename
+    params: "-a adapters.tab -t 8"
+    wrapper:
+        "0.47.0/bio/fastqc"	
+	
+
 #rule fastqc:
 #	input:
 #		"../{rep}/{cell}-{condition}-{rep}_combined_{rd}.fastq.gz"
