@@ -93,6 +93,9 @@ rule sickle_pe:
     qual_type="sanger",
     # optional extra parameters
     extra="-g -q 20 -l 40"
+  log:
+    # optional log file
+    "trimmed/sickle/{cell}-{condition}-{rep}_combined.log"
   wrapper:
     "0.47.0/bio/sickle/pe"
 
