@@ -8,7 +8,9 @@ adapter3 = {"R1":"AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC", "R2":"AGATCGGAAGAGCGTCGTG
 
 rule all:
 	input:
-		expand("trimmed/{cell}-{condition}-{rep}_combined_R1.fastq.gz", cell=cell, condition=condition, rep=rep, rd=rd ),
+		expand("fastqc/sickle/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html", cell=cell, condition=condition, rep=rep, rd=rd ),
+		expand("trimmed/sickle/{cell}-{condition}-{rep}_combined_R1.fastq.gz", cell=cell, condition=condition, rep=rep, rd=rd ),
+		expand("trimmed/{cell}-{condition}-{rep}_combined_{rd}.fastq.gz", cell=cell, condition=condition, rep=rep, rd=rd ),
 		expand("fastqc/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html", cell=cell, condition=condition, rep=rep, rd=rd ),
 		expand("fastqc/cutadapt/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html", cell=cell, condition=condition, rep=rep, rd=rd )
 		#expand("fastq/trim/{cell}-{condition}-{rep}_combined_{rd}.fastq", cell=cell, condition=condition, rep=rep, rd=rd )
@@ -47,12 +49,22 @@ rule cutadapt:
         "0.47.0/bio/cutadapt/pe"
 
 
-rule post_fastqc:
+rule cutadapt_fastqc:
     input:
         "trimmed/{cell}-{condition}-{rep}_combined_{rd}.fastq.gz"
     output:
         html="fastqc/cutadapt/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html",
         zip="fastqc/cutadapt/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.zip" # the suffix _fastqc.zip is necessary for multiqc to find the file. If not using multiqc, you are free to choose an arbitrary filename
+    params: "-a adapters.tab -t 8"
+    wrapper:
+        "0.47.0/bio/fastqc"
+	
+rule skicle_fastqc:
+    input:
+        "trimmed/{cell}-{condition}-{rep}_combined_{rd}.fastq.gz"
+    output:
+        html="fastqc/sickle/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html",
+        zip="fastqc/sickle/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.zip" # the suffix _fastqc.zip is necessary for multiqc to find the file. If not using multiqc, you are free to choose an arbitrary filename
     params: "-a adapters.tab -t 8"
     wrapper:
         "0.47.0/bio/fastqc"
