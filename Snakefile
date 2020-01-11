@@ -55,8 +55,35 @@ rule post_fastqc:
         zip="fastqc/cutadapt/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.zip" # the suffix _fastqc.zip is necessary for multiqc to find the file. If not using multiqc, you are free to choose an arbitrary filename
     params: "-a adapters.tab -t 8"
     wrapper:
-        "0.47.0/bio/fastqc"	
+        "0.47.0/bio/fastqc"
 	
+	
+rule multiqc:
+    input:
+        "trimmed/{cell}-{condition}-{rep}_combined_{rd}.fastq.gz"
+    output:
+        "multiqc/multiqc.html"
+    params:
+        ""  # Optional: extra parameters for multiqc.
+    wrapper:
+        "0.47.0/bio/multiqc"
+
+	
+rule sickle_pe:
+  input:
+    r1="trimmed/{cell}-{condition}-{rep}_combined_R1.fastq.gz",
+    r2="trimmed/{cell}-{condition}-{rep}_combined_R2.fastq.gz"
+  output:
+    r1="trimmed/sickle/{cell}-{condition}-{rep}_combined_R1.fastq.gz",
+    r2="trimmed/sickle/{cell}-{condition}-{rep}_combined_R2.fastq.gz",
+    rs="trimmed/sickle/{cell}-{condition}-{rep}_combined_single.fastq.gz"
+  params:
+    qual_type="sanger",
+    # optional extra parameters
+    extra="-g"
+  wrapper:
+    "0.47.0/bio/sickle/pe"
+
 
 #rule fastqc:
 #	input:
