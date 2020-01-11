@@ -92,7 +92,7 @@ rule sickle_pe:
   params:
     qual_type="sanger",
     # optional extra parameters
-    extra="-g"
+    extra="-g -q 20 -l 40"
   wrapper:
     "0.47.0/bio/sickle/pe"
 
