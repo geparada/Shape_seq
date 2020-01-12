@@ -140,8 +140,6 @@ rule bowtie2:
         index = "data/transcriptome.canonical.fasta.1.bt2"
     output:
         "mapped/{cell}-{condition}-{rep}.sam"
-    log:
-        "mapped/{sample}.log"
     params:
         index="data/transcriptome.canonical.fasta",  # prefix of reference genome index (built with bowtie2-build)
         extra=""  # optional parameters
