@@ -1,3 +1,4 @@
+configfile : "config.yaml"
 
 cell = ["Sh3", "Sh5"]
 condition = ["DMSO", "NAI"]
@@ -8,6 +9,7 @@ adapter3 = {"R1":"AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC", "R2":"AGATCGGAAGAGCGTCGTG
 
 rule all:
 	input:
+		"mapped/{cell}-{condition}-{rep}.sam",
 		"multiqc/raw_multiqc.html",
 		"multiqc/final_multiqc.html"
 		#expand("fastqc/sickle/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html", cell=cell, condition=condition, rep=rep, rd=rd ),
@@ -137,7 +139,7 @@ rule bowtie2:
         m2="trimmed/sickle/{cell}-{condition}-{rep}_combined_R2.fastq.gz",
         index = "data/transcriptome.canonical.fasta.1.bt2"
     output:
-        "mapped/{sample}.bam"
+        "mapped/{cell}-{condition}-{rep}.sam"
     log:
         "mapped/{sample}.log"
     params:
