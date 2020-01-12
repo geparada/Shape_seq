@@ -61,7 +61,7 @@ rule cutadapt_fastqc:
 	
 rule skicle_fastqc:
     input:
-        "trimmed/{cell}-{condition}-{rep}_combined_{rd}.fastq.gz"
+        "trimmed/sickle/{cell}-{condition}-{rep}_combined_{rd}.fastq.gz"
     output:
         html="fastqc/sickle/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html",
         zip="fastqc/sickle/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.zip" # the suffix _fastqc.zip is necessary for multiqc to find the file. If not using multiqc, you are free to choose an arbitrary filename
