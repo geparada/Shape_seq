@@ -145,7 +145,7 @@ rule bowtie2:
         extra=""  # optional parameters
     threads: 8
     conda:
-        "envs/core.yaml"
+        "env/core.yaml"
     shell:
         "bowtie2 -x {params.index} -1 {input.m1} -2 {input.m2} -p {threads}  > {output}"
 
