@@ -8,6 +8,7 @@ adapter3 = {"R1":"AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC", "R2":"AGATCGGAAGAGCGTCGTG
 
 rule all:
 	input:
+		"multiqc/multiqc.html",
 		expand("fastqc/sickle/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html", cell=cell, condition=condition, rep=rep, rd=rd ),
 		expand("trimmed/sickle/{cell}-{condition}-{rep}_combined_R1.fastq.gz", cell=cell, condition=condition, rep=rep, rd=rd ),
 		expand("trimmed/{cell}-{condition}-{rep}_combined_{rd}.fastq.gz", cell=cell, condition=condition, rep=rep, rd=rd ),
@@ -72,7 +73,8 @@ rule skicle_fastqc:
 	
 rule multiqc:
     input:
-        "trimmed/{cell}-{condition}-{rep}_combined_{rd}.fastq.gz"
+        "fastqc/sickle/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html",
+	"trimmed/{cell}-{condition}-{rep}_combined.log"
     output:
         "multiqc/multiqc.html"
     params:
