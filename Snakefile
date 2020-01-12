@@ -111,29 +111,42 @@ rule sickle_pe:
   wrapper:
     "0.47.0/bio/sickle/pe"
 
+    
+rule get_non_redudant_transcriptome:
+  input:
+    config["transcript_fasta"],
+    config["canonical_transcripts"]
+  output:
+    "data/transcriptome.canonical.fasta"
+  shell:
+    "python scripts/get_non_redudant_isoforms.py {input} > {output}"
 
-#rule fastqc:
-#	input:
-#		"../{rep}/{cell}-{condition}-{rep}_combined_{rd}.fastq.gz"
-#	output:
-#		"fastqc/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html"
-#	params:
-#		"fastqc/{cell}-{condition}-{rep}_combined_{rd}/"
-#	shell:
-#		"fastqc {input} -o {params} -a adapters.tab -t 8"		
+    
+rule bowtie2_build:
+  input:
+    "data/transcriptome.canonical.fasta"
+  output:
+    "data/transcriptome.canonical.fasta.1.bt2"
+  conda: "envs/core.yaml" 
+  shell:
+    "bowtie2-build {input} {input}"
 
+rule bowtie2:
+    input:
+        m1="trimmed/sickle/{cell}-{condition}-{rep}_combined_R1.fastq.gz",
+        m2="trimmed/sickle/{cell}-{condition}-{rep}_combined_R2.fastq.gz",
+        index = "data/transcriptome.canonical.fasta.1.bt2"
+    output:
+        "mapped/{sample}.bam"
+    log:
+        "mapped/{sample}.log"
+    params:
+        index="data/transcriptome.canonical.fasta",  # prefix of reference genome index (built with bowtie2-build)
+        extra=""  # optional parameters
+    threads: 8
+    conda:
+        "envs/core.yaml"
+    shell:
+        "bowtie2 -x {params.index} -1 {input.m1} -2 {input.m2} -p {threads}   > {output}"
 
-rule triming:
-	input:
-		"fastq/{cell}-{condition}-{rep}_combined_{rd}.fastq"
-	output:
-		temp("fastq/trim/{cell}-{condition}-{rep}_combined_{rd}.fastq")
-	params:
-		apt3 =  lambda wildcards : adapter3[wildcards.rd],
-		minqual = 10
-	conda:
-		"env/core.yaml"
-	shell:
-		"python ../StructureFold2/fastq_trimmer.py  {input} -tp {params.apt3} -minqual {params.minqual}"
-		
-
+    
