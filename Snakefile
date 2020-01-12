@@ -9,7 +9,7 @@ adapter3 = {"R1":"AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC", "R2":"AGATCGGAAGAGCGTCGTG
 
 rule all:
 	input:
-		"mapped/{cell}-{condition}-{rep}.sam",
+		"expand(mapped/{cell}-{condition}-{rep}.sam", , condition=condition, rep=rep, rd=rd ),
 		"multiqc/raw_multiqc.html",
 		"multiqc/final_multiqc.html"
 		#expand("fastqc/sickle/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html", cell=cell, condition=condition, rep=rep, rd=rd ),
@@ -147,6 +147,6 @@ rule bowtie2:
     conda:
         "envs/core.yaml"
     shell:
-        "bowtie2 -x {params.index} -1 {input.m1} -2 {input.m2} -p {threads}   > {output}"
+        "bowtie2 -x {params.index} -1 {input.m1} -2 {input.m2} -p {threads}  > {output}"
 
     
