@@ -9,7 +9,7 @@ adapter3 = {"R1":"AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC", "R2":"AGATCGGAAGAGCGTCGTG
 
 rule all:
 	input:
-		expand("mapped/{cell}-{condition}-{rep}.sam",  condition=condition, rep=rep, rd=rd ),
+		expand("mapped/{cell}-{condition}-{rep}.sam",cell=cell,  condition=condition, rep=rep, rd=rd ),
 		"multiqc/raw_multiqc.html",
 		"multiqc/final_multiqc.html"
 		#expand("fastqc/sickle/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html", cell=cell, condition=condition, rep=rep, rd=rd ),
