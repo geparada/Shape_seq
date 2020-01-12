@@ -70,13 +70,22 @@ rule skicle_fastqc:
     wrapper:
         "0.47.0/bio/fastqc"
 	
+rule multiqc_raw:
+    input:
+        expand("fastqc/raw/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html", cell=cell, condition=condition, rep=rep, rd=rd)
+    output:
+        "multiqc/final_multiqc.html"
+    params:
+        ""  # Optional: extra parameters for multiqc.
+    wrapper:
+        "0.47.0/bio/multiqc"
 	
 rule multiqc:
     input:
         expand("fastqc/sickle/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html", cell=cell, condition=condition, rep=rep, rd=rd),
 	expand("trimmed/{cell}-{condition}-{rep}_combined.log", cell=cell, condition=condition, rep=rep, rd=rd)
     output:
-        "multiqc/multiqc.html"
+        "multiqc/final_multiqc.html"
     params:
         ""  # Optional: extra parameters for multiqc.
     wrapper:
