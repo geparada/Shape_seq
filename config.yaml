@@ -1,0 +1,2 @@
+transcript_fasta : "/lustre/scratch117/cellgen/team218/gp7/Genome/hg38/gencode.v32.transcripts.fa"
+canonical_transcripts : "/lustre/scratch117/cellgen/team218/gp7/Genome/hg38/GENCODE.v32.knownCanonical.tsv"
