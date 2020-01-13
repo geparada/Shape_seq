@@ -118,6 +118,7 @@ rule get_non_redudant_transcriptome:
   input:
     config["transcript_fasta"],
     config["canonical_transcripts"]
+  conda: "env/core.yaml"
   output:
     "data/transcriptome.canonical.fasta"
   shell:
