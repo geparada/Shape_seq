@@ -129,7 +129,7 @@ rule bowtie2_build:
     "data/transcriptome.canonical.fasta"
   output:
     "data/transcriptome.canonical.fasta.1.bt2"
-  conda: "envs/core.yaml" 
+  conda: "env/core.yaml" 
   shell:
     "bowtie2-build {input} {input}"
 
