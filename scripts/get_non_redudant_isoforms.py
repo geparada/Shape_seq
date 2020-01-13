@@ -10,7 +10,7 @@ def main(fasta, knownCanonical):
         reader = csv.DictReader(knownCanonical_file, delimiter="\t")
         
         for row in reader:
-            main_transcripts.append(row["transcript"])
+            main_transcripts.add(row["transcript"])
             
     with open(fasta) as fasta_file:
         
