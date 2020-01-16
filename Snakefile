@@ -154,11 +154,12 @@ rule sam_filter:
     input:
          "mapped/{cell}-{condition}-{rep}.sam"
     output:
-         "mapped/{cell}-{condition}-{rep}_filtered.sam"
+         sam="mapped/{cell}-{condition}-{rep}_filtered.sam",
+         log="mapped/{cell}-{condition}-{rep}_filtered.log"
     conda:
         "env/core.yaml"		
     shell:
-        "python2 ../StructureFold2/sam_filter.py -sam {input}"
+        "python2 ../StructureFold2/sam_filter.py -sam {input} -logname {output.log}"
         
 rule generate_rtsc:
     input:
