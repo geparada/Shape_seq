@@ -9,7 +9,7 @@ adapter3 = {"R1":"AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC", "R2":"AGATCGGAAGAGCGTCGTG
 
 rule all:
 	input:
-		expand("mapped/{cell}-{condition}-{rep}.sam",cell=cell,  condition=condition, rep=rep, rd=rd ),
+		expand("mapped/{cell}-{condition}-{rep}.rtsc",cell=cell,  condition=condition, rep=rep, rd=rd ),
 		"multiqc/raw_multiqc.html",
 		"multiqc/final_multiqc.html"
 		#expand("fastqc/sickle/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html", cell=cell, condition=condition, rep=rep, rd=rd ),
@@ -150,4 +150,20 @@ rule bowtie2:
     shell:
         "bowtie2 -x {params.index} -1 {input.m1} -2 {input.m2} -p {threads}  > {output}"
 
-    
+rule sam_filter:
+    input:
+         "mapped/{cell}-{condition}-{rep}.sam"
+    output:
+         "mapped/{cell}-{condition}-{rep}_filtered.sam"
+    shell:
+        "python2 ../StructureFold2/sam_filter.py -sam {input}"
+        
+rule generate_rtsc:
+    input:
+        "mapped/{cell}-{condition}-{rep}_filtered.sam",
+        "data/transcriptome.canonical.fasta"
+    output:
+        "mapped/{cell}-{condition}-{rep}.rtsc"
+    shell:
+        "python2 ../StructureFold2/sam_to_rtsc.py -trim _filtered -single {input} "
+        
