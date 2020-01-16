@@ -155,6 +155,8 @@ rule sam_filter:
          "mapped/{cell}-{condition}-{rep}.sam"
     output:
          "mapped/{cell}-{condition}-{rep}_filtered.sam"
+    conda:
+        "env/core.yaml"		
     shell:
         "python2 ../StructureFold2/sam_filter.py -sam {input}"
         
@@ -164,6 +166,8 @@ rule generate_rtsc:
         "data/transcriptome.canonical.fasta"
     output:
         "mapped/{cell}-{condition}-{rep}.rtsc"
+    conda:
+        "env/core.yaml"
     shell:
         "python2 ../StructureFold2/sam_to_rtsc.py -trim _filtered -single {input} "
         
