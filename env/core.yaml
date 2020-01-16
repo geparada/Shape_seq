@@ -13,3 +13,4 @@ dependencies:
  - rnastructure
  - meme
  - viennarna
+ - pysam
