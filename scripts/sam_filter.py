@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+## Taken from StructureFold2 GitHub. This code is being addapted for paired-end sequencing experiments
+
+
 '''
 StructureFold2 batch running script for post-processing <.sam> alignment files before generating <.rtsc> files
 This is considered an important part of the StructureFold2 pipleline and should be used even if you chose not to use bowtie2 as your
