@@ -215,5 +215,5 @@ rule rtsc_react:
     conda:
         "env/core.yaml"
     shell:
-        "python2 ../StructureFold2/rtsc_coverage.py {input} -name {params}"        
+        "python2 ../StructureFold2/rtsc_to_react.py {input} -name {params}"        
         
