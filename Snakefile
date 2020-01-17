@@ -9,6 +9,7 @@ adapter3 = {"R1":"AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC", "R2":"AGATCGGAAGAGCGTCGTG
 
 rule all:
 	input:
+        expand("react/{cell}" + "_".join(condition) + "_ln_nrm.react", cell=cell),
 		expand("mapped/{cell}-{condition}-{rep}.rtsc",cell=cell,  condition=condition, rep=rep, rd=rd ),
 		"multiqc/raw_multiqc.html",
 		"multiqc/final_multiqc.html"
@@ -171,4 +172,48 @@ rule generate_rtsc:
         "env/core.yaml"
     shell:
         "python2 ../StructureFold2/sam_to_rtsc.py -trim _filtered -single {input} "
+
+        
+treatment_dict = dict()
+
+for CELL in cell:
+    for CONDITION in condition:
+        treatment_dict[(CELL, CONDITION)] = expand("mapped/{cell}-{condition}-{rep}.rtsc",cell=CELL,  condition=CONDITION, rep=rep)
+        
+        
+rule merge_rtsc:
+    input:
+        lambda w: treatment_dict[(w.cell, w.condition)]
+    output:
+        "rtsc/{cell}-{condition}.rtsc"
+    conda:
+        "env/core.yaml"
+    shell:
+        "python2 ../StructureFold2/rtsc_combine.py {input} -name {output}"
+
+        
+rule rtsc_coverage:
+    input:
+        "rtsc/{cell}-{condition}.rtsc"
+    output:
+        "rtsc/{cell}-{condition}_coverage.csv"
+    conda:
+        "env/core.yaml"
+    shell:
+        "python2 ../StructureFold2/rtsc_coverage.py -single {input}"
+
+        
+rule rtsc_react:
+    input:
+        "rtsc/{cell}-" + condition[0] + ".rtsc",
+        "rtsc/{cell}-" + condition[1] + ".rtsc",
+        "data/transcriptome.canonical.fasta"
+    output:
+        "react/{cell}" + "_".join(condition) + "_ln_nrm.react"
+    params:
+        "react/{cell}" + "_".join(condition) + "_ln_nrm"
+    conda:
+        "env/core.yaml"
+    shell:
+        "python2 ../StructureFold2/rtsc_coverage.py {input} -name {params}"        
         
