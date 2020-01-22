@@ -122,7 +122,7 @@ rule reverse_mate:
         "trimmed/sickle/{cell}-{condition}-{rep}_combined_R2.rev.fastq.gz"
     conda: "env/core.yaml"		
     shell:
-        "python reverse_2mate.py {input} {output}" 	
+        "python scripts/reverse_2mate.py {input} {output}" 	
     
 rule get_non_redudant_transcriptome:
   input:
