@@ -9,7 +9,7 @@ adapter3 = {"R1":"AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC", "R2":"AGATCGGAAGAGCGTCGTG
 
 rule all:
 	input:
-        	expand("react/{cell}" + "_".join(condition) + "_ln_nrm.react", cell=cell),
+        expand("react/{cell}" + "_".join(condition) + "_ln_nrm.react", cell=cell),
 		expand("mapped/{cell}-{condition}-{rep}.rtsc",cell=cell,  condition=condition, rep=rep, rd=rd ),
 		"multiqc/raw_multiqc.html",
 		"multiqc/final_multiqc.html"
