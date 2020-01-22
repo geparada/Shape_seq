@@ -87,8 +87,8 @@ rule multiqc_raw:
 	
 rule multiqc:
     input:
-		expand("fastqc/sickle/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html", cell=cell, condition=condition, rep=rep, rd=rd),
-		expand("trimmed/{cell}-{condition}-{rep}_combined.log", cell=cell, condition=condition, rep=rep, rd=rd)
+        expand("fastqc/sickle/{cell}-{condition}-{rep}_combined_{rd}/{cell}-{condition}-{rep}_combined_{rd}_fastqc.html", cell=cell, condition=condition, rep=rep, rd=rd),
+        expand("trimmed/{cell}-{condition}-{rep}_combined.log", cell=cell, condition=condition, rep=rep, rd=rd)
     output:
         "multiqc/final_multiqc.html"
     params:
@@ -116,14 +116,13 @@ rule sickle_pe:
     "0.47.0/bio/sickle/pe"
 
 rule reverse_mate:
-	input:
-		"trimmed/sickle/{cell}-{condition}-{rep}_combined_R2.fastq.gz"
-	output:
-		"trimmed/sickle/{cell}-{condition}-{rep}_combined_R2.rev.fastq.gz"
-    conda:
-        "env/core.yaml"		
-	shell:
-		"python reverse_2mate.py {input} {output}" 	
+    input:
+        "trimmed/sickle/{cell}-{condition}-{rep}_combined_R2.fastq.gz"
+    output:
+        "trimmed/sickle/{cell}-{condition}-{rep}_combined_R2.rev.fastq.gz"
+    conda: "env/core.yaml"		
+    shell:
+        "python reverse_2mate.py {input} {output}" 	
     
 rule get_non_redudant_transcriptome:
   input:
