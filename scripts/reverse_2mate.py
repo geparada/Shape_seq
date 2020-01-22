@@ -9,7 +9,7 @@ def main( input_fastq, out_fastqgz):
 	with bgzf.BgzfWriter(out_fastqgz, "wb") as outgz:
 
 		for record in  SeqIO.parse(gzopen(input_fastq, "rt"), format="fastq"):
-			new_recod = record.seq.reverse_complement()
+			new_record = record.seq.reverse_complement()
 			new_record.id = record.id
 			new_record.description = record.description
 			
