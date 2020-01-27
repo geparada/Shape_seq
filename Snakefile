@@ -226,3 +226,19 @@ rule rtsc_react:
         "env/core.yaml"
     shell:
         "python2 ../StructureFold2/rtsc_to_react.py {input} -name {params} -bases AGCT"                
+
+
+rule normalise_react:
+    input:
+        a :"rtsc/{cell}-" + condition[0] + ".rtsc",
+        b : "rtsc/{cell}-" + condition[1] + ".rtsc",
+        transcripts : "data/transcriptome.canonical.fasta",   
+        scale  : "Sh3_DMSO_NAI_ln_nrm.scale"
+    output:
+        "react/norm/{cell}" + "_" + "_".join(condition) + "_ln_nrm.react"
+    params:
+        "react/norm/{cell}" + "_" + "_".join(condition) + "_ln_nrm"
+    conda:
+        "env/core.yaml"
+    shell:
+        "python2 ../StructureFold2/rtsc_to_react.py {input.a} {input.b} {input.transcripts} -name {params} -bases AGCT -scale {input.scale}"      
