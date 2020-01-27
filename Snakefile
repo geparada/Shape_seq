@@ -1,5 +1,5 @@
 configfile : "config.yaml"
-#
+
 cell = ["Sh3", "Sh5"]
 condition = ["DMSO", "NAI"]
 rep = ["rep1", "rep2"]
@@ -9,7 +9,7 @@ adapter3 = {"R1":"AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC", "R2":"AGATCGGAAGAGCGTCGTG
 
 rule all:
 	input:
-        expand("react/{cell}" + "_".join(condition) + "_ln_nrm.react", cell=cell),
+        expand("react/{cell}" + "_" + "_".join(condition) + "_ln_nrm.react", cell=cell),
 		expand("mapped/{cell}-{condition}-{rep}.rtsc",cell=cell,  condition=condition, rep=rep, rd=rd ),
 		"multiqc/raw_multiqc.html",
 		"multiqc/final_multiqc.html"
@@ -218,11 +218,11 @@ rule rtsc_react:
         "rtsc/{cell}-" + condition[1] + ".rtsc",
         "data/transcriptome.canonical.fasta"
     output:
-        "react/{cell}" + "_".join(condition) + "_ln_nrm.react"
+        "react/{cell}" + "_" + "_".join(condition) + "_ln_nrm.react",
+        "react/{cell}" + "_" + "_".join(condition) + "_ln_nrm.scale"
     params:
-        "react/{cell}" + "_".join(condition) + "_ln_nrm"
+        "react/{cell}" + "_" + "_".join(condition) + "_ln_nrm"
     conda:
         "env/core.yaml"
     shell:
-        "python2 ../StructureFold2/rtsc_to_react.py {input} -name {params} -bases AGCT"        
-        
+        "python2 ../StructureFold2/rtsc_to_react.py {input} -name {params} -bases AGCT"                
