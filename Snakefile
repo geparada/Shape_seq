@@ -258,15 +258,14 @@ rule coverage_overlap:
         "python2 ../StructureFold2/rtsc_coverage.py {input.transcripts} -f {input.rtsc} -bases AGCT -name {output} -ol -on {output}"
 
 
-
 rule fold:
     input:
-        coverage =  "coverage/{cell}-" + condition[1] +  "_coverage.csv",
-        transcripts = "data/transcriptome.canonical.fasta",   
-        react = "react/norm/{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react"
+	RNA_IDs = "coverage/overlap." + "_".join(cell) + ".txt",
+        transcripts = "data/transcriptome.canonical.fasta",  	
+        react =  "react/norm/{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react"
     output:
         "{cell}.test.txt"
     conda:
         "env/core.yaml"           
     shell:
-        "python2 ../StructureFold2/batch_fold.py {input.coverage} {input.transcripts} 1 -r {input.react}"
+        "python2 ../StructureFold2/batch_fold.py {input.RNA_IDs} {input.transcripts} 1 short.txt long.txt -r {input.react}"
