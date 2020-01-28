@@ -9,7 +9,7 @@ adapter3 = {"R1":"AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC", "R2":"AGATCGGAAGAGCGTCGTG
 
 rule all:
 	input:
-		expand("{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react_overlap." + "_".join(cell) + ".txt_310.15_transcriptome.canonical.fasta_RNAstructure-mfe_sht_0_md_99999", cell=cell),
+		expand("{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react_overlap." + "_".join(cell) + ".txt_310.15_transcriptome.canonical.fasta_Vienna_package-mfe_sht_0_md_99999", cell=cell),
 		expand("react/norm/{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react", cell=cell),
 		expand("mapped/{cell}-{condition}-{rep}.rtsc",cell=cell,  condition=condition, rep=rep, rd=rd ),
 		"multiqc/raw_multiqc.html",
@@ -264,7 +264,7 @@ rule fold:
         transcripts = "data/transcriptome.canonical.fasta",  	
         react =  "react/norm/{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react"
     output:
-        directory("{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react_overlap." + "_".join(cell) + ".txt_310.15_transcriptome.canonical.fasta_RNAstructure-mfe_sht_0_md_99999")
+        directory("{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react_overlap." + "_".join(cell) + ".txt_310.15_transcriptome.canonical.fasta_Vienna_package-mfe_sht_0_md_99999")
     conda:
         "env/core.yaml"           
     shell:
