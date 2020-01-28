@@ -235,7 +235,8 @@ rule normalise_react:
         a = "rtsc/{cell}-" + condition[0] + ".rtsc",
         b = "rtsc/{cell}-" + condition[1] + ".rtsc",
         transcripts = "data/transcriptome.canonical.fasta",   
-        scale  = "react/Sh3_DMSO_NAI_ln_nrm.scale"
+        scale  = "react/" + cell[0] + "_" + "_".join(condition) + "_ln_nrm.scale"
+	#scale  = "react/Sh3_DMSO_NAI_ln_nrm.scale"
     output:
         "react/norm/{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react"
     params:
