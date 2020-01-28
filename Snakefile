@@ -245,6 +245,19 @@ rule normalise_react:
     shell:
         "python2 ../StructureFold2/rtsc_to_react.py {input.a} {input.b} {input.transcripts} -name {params} -bases AGCT -scale {input.scale}" 
 
+rule coverage_overlap:
+    input:
+        cov = expand("coverage/{cell}-" + condition[1] +  "_coverage.csv", cell=cell)
+    output:
+        "coverage/overlap." + "_".join(cell) + ".txt"
+    params:
+        ",".join(input.cov)
+    conda:
+        "env/core.yaml"
+    shell:
+        "python2 ../StructureFold2/rtsc_coverage.py {input.transcripts} -f {input.rtsc} -bases AGCT -name {output} -ol -on {output}"
+
+
 
 rule fold:
     input:
