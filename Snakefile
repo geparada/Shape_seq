@@ -256,6 +256,7 @@ rule coverage_overlap:
     shell:
         "python2 ../StructureFold2/rtsc_coverage.py {input.transcripts} -f {input.rtsc} -bases AGCT -name {output} -ol -on {output}"
 
+output_files_Sh3_DMSO_NAI_ln_nrm.norm.react_overlap.Sh3_Sh5.txt_310.15_transcriptome.canonical.fasta_RNAstructure-mfe_sht_0_md_99999/
 
 rule fold:
     input:
@@ -263,7 +264,7 @@ rule fold:
         transcripts = "data/transcriptome.canonical.fasta",  	
         react =  "react/norm/{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react"
     output:
-        "{cell}.test.txt"
+        "{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react_overlap." + "_".join(cell) + ".txt_310.15_transcriptome.canonical.fasta_RNAstructure-mfe_sht_0_md_99999/ID_not_in_reactivity.txt"
     conda:
         "env/core.yaml"           
     shell:
