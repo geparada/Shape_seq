@@ -10,7 +10,6 @@ adapter3 = {"R1":"AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC", "R2":"AGATCGGAAGAGCGTCGTG
 rule all:
 	input:
 		expand("{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react_overlap." + "_".join(cell) + ".txt_310.15_transcriptome.canonical.fasta_RNAstructure-mfe_sht_0_md_99999/ID_not_in_reactivity.txt", cell=cell),
-		expand("rtsc/{cell}-{condition}_coverage.csv", cell=cell, condition=condition),
 		expand("react/norm/{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react", cell=cell),
 		expand("mapped/{cell}-{condition}-{rep}.rtsc",cell=cell,  condition=condition, rep=rep, rd=rd ),
 		"multiqc/raw_multiqc.html",
