@@ -260,7 +260,7 @@ rule coverage_overlap:
 
 rule fold:
     input:
-	RNA_IDs = "coverage/overlap." + "_".join(cell) + ".txt",
+        RNA_IDs = "coverage/overlap." + "_".join(cell) + ".txt",
         transcripts = "data/transcriptome.canonical.fasta",  	
         react =  "react/norm/{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react"
     output:
