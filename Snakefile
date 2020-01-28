@@ -268,4 +268,4 @@ rule fold:
     conda:
         "env/core.yaml"           
     shell:
-        "python2 ../StructureFold2/batch_fold_rna.py {input.RNA_IDs} {input.transcripts} 1 short.txt long.txt -r {input.react}"
+        "python2 ../StructureFold2/batch_fold_rna.py {input.RNA_IDs} {input.transcripts} 2 short.txt long.txt -r {input.react}"
