@@ -251,7 +251,7 @@ rule coverage_overlap:
     output:
         "coverage/overlap." + "_".join(cell) + ".txt"
     params:
-        ",".join({input.cov})
+        ",".join(expand("coverage/{cell}-" + condition[1] +  "_coverage.csv", cell=cell))
     conda:
         "env/core.yaml"
     shell:
