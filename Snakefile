@@ -9,7 +9,8 @@ adapter3 = {"R1":"AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC", "R2":"AGATCGGAAGAGCGTCGTG
 
 rule all:
 	input:
-	        expand("react/{cell}" + "_" + "_".join(condition) + "_ln_nrm.react", cell=cell),
+	    expand("rtsc/{cell}-{condition}_coverage.csv", cell=cell, condition=condition),
+	    expand("react/norm/{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react", cell=cell),
 		expand("mapped/{cell}-{condition}-{rep}.rtsc",cell=cell,  condition=condition, rep=rep, rd=rd ),
 		"multiqc/raw_multiqc.html",
 		"multiqc/final_multiqc.html"
@@ -203,13 +204,14 @@ rule merge_rtsc:
         
 rule rtsc_coverage:
     input:
-        "rtsc/{cell}-{condition}.rtsc"
+        transcripts = "data/transcriptome.canonical.fasta",   
+        rtsc = "rtsc/{cell}-{condition}.rtsc"
     output:
-        "rtsc/{cell}-{condition}_coverage.csv"
+        "coverage/{cell}-{condition}_coverage.csv"
     conda:
         "env/core.yaml"
     shell:
-        "python2 ../StructureFold2/rtsc_coverage.py -single {input}"
+        "python2 ../StructureFold2/rtsc_coverage.py {input.transcripts} -f {input.rtsc} -bases AGCT -name {output}"
 
         
 rule rtsc_react:
@@ -230,15 +232,28 @@ rule rtsc_react:
 
 rule normalise_react:
     input:
-        a :"rtsc/{cell}-" + condition[0] + ".rtsc",
-        b : "rtsc/{cell}-" + condition[1] + ".rtsc",
-        transcripts : "data/transcriptome.canonical.fasta",   
-        scale  : "Sh3_DMSO_NAI_ln_nrm.scale"
+        a = "rtsc/{cell}-" + condition[0] + ".rtsc",
+        b = "rtsc/{cell}-" + condition[1] + ".rtsc",
+        transcripts = "data/transcriptome.canonical.fasta",   
+        scale  = "react/Sh3_DMSO_NAI_ln_nrm.scale"
     output:
-        "react/norm/{cell}" + "_" + "_".join(condition) + "_ln_nrm.react"
+        "react/norm/{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react"
     params:
-        "react/norm/{cell}" + "_" + "_".join(condition) + "_ln_nrm"
+        "react/norm/{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm"
     conda:
         "env/core.yaml"
     shell:
-        "python2 ../StructureFold2/rtsc_to_react.py {input.a} {input.b} {input.transcripts} -name {params} -bases AGCT -scale {input.scale}"      
+        "python2 ../StructureFold2/rtsc_to_react.py {input.a} {input.b} {input.transcripts} -name {params} -bases AGCT -scale {input.scale}" 
+
+
+rule fold:
+    input:
+        coverage =  "coverage/{cell}-" + condition[1] +  "_coverage.csv",
+        transcripts = "data/transcriptome.canonical.fasta",   
+        react = "react/norm/{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react"
+    output:
+        "{cell}.test.txt"
+    conda:
+        "env/core.yaml"           
+    shell:
+        "python2 ../StructureFold2/batch_fold.py {input.coverage} {input.transcripts} 1 -r {input.react}"
