@@ -247,11 +247,10 @@ rule normalise_react:
 
 rule coverage_overlap:
     input:
-        cov = expand("coverage/{cell}-" + condition[1] +  "_coverage.csv", cell=cell)
+        transcripts = "data/transcriptome.canonical.fasta",   
+        rtsc = expand("rtsc/{cell}-" + condition[1] + ".rtsc", cell=cell)
     output:
         "coverage/overlap." + "_".join(cell) + ".txt"
-    params:
-        ",".join(expand("coverage/{cell}-" + condition[1] +  "_coverage.csv", cell=cell))
     conda:
         "env/core.yaml"
     shell:
