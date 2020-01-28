@@ -264,7 +264,7 @@ rule fold:
         transcripts = "data/transcriptome.canonical.fasta",  	
         react =  "react/norm/{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react"
     output:
-        directory("{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react_overlap." + "_".join(cell) + ".txt_310.15_transcriptome.canonical.fasta_RNAstructure-mfe_sht_0_md_99999/")
+        directory("{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react_overlap." + "_".join(cell) + ".txt_310.15_transcriptome.canonical.fasta_RNAstructure-mfe_sht_0_md_99999")
     conda:
         "env/core.yaml"           
     shell:
