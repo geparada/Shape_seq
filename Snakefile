@@ -267,7 +267,7 @@ rule react_statistics:
 		"stats/{cell}.statistics.csv"
 	conda: "env/core.yaml"		
 	shell:
-		"react_statistics.py -react {input.rtsc} -restrict {input.overlap} -name {output}"
+		"python2 ../StructureFold2/react_statistics.py -react {input.rtsc} -restrict {input.overlap} -name {output}"
 
 		
 rule get_blue_path:
