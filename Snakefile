@@ -262,7 +262,7 @@ rule coverage_overlap:
 rule react_statistics:
 	input:
 		overlap = "coverage/overlap." + "_".join(cell) + ".txt",
-		rtsc = ["rtsc/{cell}-" + condition[0] + ".rtsc", "rtsc/{cell}-" + condition[1] + ".rtsc"]
+		react = "react/norm/{cell}" + "_" + "_".join(condition) + "_ln_nrm.norm.react"
 	output:
 		"stats/{cell}.statistics.csv"
 	conda: "env/core.yaml"		
