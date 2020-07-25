@@ -228,8 +228,7 @@ rule rtsc_react:
         "env/core.yaml"
     shell:
         "python2 ../StructureFold2/rtsc_to_react.py {input} -name {params} -bases AGCT"                
-
-
+	
 rule normalise_react:
     input:
         a = "rtsc/{cell}-" + condition[0] + ".rtsc",
@@ -245,19 +244,33 @@ rule normalise_react:
         "env/core.yaml"
     shell:
         "python2 ../StructureFold2/rtsc_to_react.py {input.a} {input.b} {input.transcripts} -name {params} -bases AGCT -scale {input.scale}" 
+	
 
 rule coverage_overlap:
     input:
-        transcripts = "data/transcriptome.canonical.fasta",   
+        transcripts = "data/transcriptome.canonical.fasta",
+		#rtsc="rtsc/{cell}-{condition}.rtsc"
         rtsc = expand("rtsc/{cell}-" + condition[1] + ".rtsc", cell=cell)
     output:
         "coverage/overlap." + "_".join(cell) + ".txt"
     conda:
         "env/core.yaml"
-    shell:
+    shell: #here we are using this scripts with -ol to directly generate the overlap
         "python2 ../StructureFold2/rtsc_coverage.py {input.transcripts} -f {input.rtsc} -bases AGCT -name {output} -ol -on {output}"
 
+		
+rule react_statistics:
+	input:
+		overlap = "coverage/overlap." + "_".join(cell) + ".txt",
+		rtsc = ["rtsc/{cell}-" + condition[0] + ".rtsc", "rtsc/{cell}-" + condition[1] + ".rtsc"]
+	output:
+		"stats/{cell}.statistics.csv"
+    conda:
+        "env/core.yaml"		
+	shell:
+		"react_statistics.py -react {input.rtsc} -restrict {input.overlap} -name {output}"
 
+					   					   
 rule fold:
     input:
         RNA_IDs = "coverage/overlap." + "_".join(cell) + ".txt",
