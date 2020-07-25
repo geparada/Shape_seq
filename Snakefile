@@ -265,11 +265,16 @@ rule react_statistics:
 		rtsc = ["rtsc/{cell}-" + condition[0] + ".rtsc", "rtsc/{cell}-" + condition[1] + ".rtsc"]
 	output:
 		"stats/{cell}.statistics.csv"
-    conda:
+	conda:
         "env/core.yaml"		
 	shell:
 		"react_statistics.py -react {input.rtsc} -restrict {input.overlap} -name {output}"
 
+		
+get_blue_path:
+	input:
+		expand("stats/{cell}.statistics.csv", cell=cell)
+		
 					   					   
 rule fold:
     input:
