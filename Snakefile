@@ -265,8 +265,7 @@ rule react_statistics:
 		rtsc = ["rtsc/{cell}-" + condition[0] + ".rtsc", "rtsc/{cell}-" + condition[1] + ".rtsc"]
 	output:
 		"stats/{cell}.statistics.csv"
-	conda:
-        "env/core.yaml"		
+	conda: "env/core.yaml"		
 	shell:
 		"react_statistics.py -react {input.rtsc} -restrict {input.overlap} -name {output}"
 
