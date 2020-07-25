@@ -271,7 +271,7 @@ rule react_statistics:
 		"react_statistics.py -react {input.rtsc} -restrict {input.overlap} -name {output}"
 
 		
-get_blue_path:
+rule get_blue_path:
 	input:
 		expand("stats/{cell}.statistics.csv", cell=cell)
 		
